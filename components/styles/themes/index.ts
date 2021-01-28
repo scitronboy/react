@@ -95,4 +95,5 @@ export interface GeistUIThemes {
   palette: GeistUIThemesPalette
   breakpoints: GeistUIThemesBreakpoints
   expressiveness: GeistUIThemesExpressiveness
+  darkTheme?: Partial<GeistUIThemes>
 }

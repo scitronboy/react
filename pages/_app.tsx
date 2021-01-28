@@ -13,6 +13,7 @@ const Application: NextPage<AppProps<{}>> = ({ Component, pageProps }) => {
   const [customTheme, setCustomTheme] = useState<DeepPartial<GeistUIThemes>>({})
   const themeChangeHandle = (theme: DeepPartial<GeistUIThemes>) => {
     setCustomTheme(theme)
+    console.log(theme)
   }
 
   useEffect(() => {

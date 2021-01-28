@@ -54,19 +54,23 @@ const mergeTheme = (current: GeistUIThemes, custom: ThemeParam): GeistUIThemes =
   return deepMergeObject<GeistUIThemes>(current, custom as GeistUIThemes)
 }
 
-const switchTheme = (mergedTheme: GeistUIThemes): GeistUIThemes => {
+const switchTheme = (mergedTheme: GeistUIThemes, customTheme: ThemeParam): GeistUIThemes => {
   const themes: { [key in GeistUIThemes['type']]: GeistUIThemes } = {
     light: lightTheme,
     dark: darkTheme,
   }
-  return { ...mergedTheme, ...themes[mergedTheme.type] }
+
+  // If we're switching to dark mode, use the custom dark theme:
+  const themeToMerge = mergedTheme.type === 'dark' ? customTheme?.darkTheme : customTheme
+
+  return mergeTheme(themes[mergedTheme.type], themeToMerge)
 }
 
 const ThemeProvider: React.FC<PropsWithChildren<Props>> = ({ children, theme }) => {
   const customTheme = theme
   const currentTheme = useTheme()
   const merged = mergeTheme(currentTheme, customTheme)
-  const userTheme = currentTheme.type !== merged.type ? switchTheme(merged) : merged
+  const userTheme = currentTheme.type !== merged.type ? switchTheme(merged, customTheme) : merged
 
   return <ThemeContext.Provider value={userTheme}>{children}</ThemeContext.Provider>
 }
